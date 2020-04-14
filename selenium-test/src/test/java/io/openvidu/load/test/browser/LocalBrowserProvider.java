@@ -27,6 +27,7 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 
@@ -48,9 +49,12 @@ public class LocalBrowserProvider implements BrowserProvider {
 		case "chrome":
 			ChromeOptions options = ChromeBrowser.generateFakeVideoChromeOptions("/opt/openvidu/fakevideo.y4m",
 					"/opt/openvidu/fakeaudio.wav");
+			options.addArguments("--window-size=1920,1200","--ignore-certificate-errors");
 			capabilities = DesiredCapabilities.chrome();
 			capabilities.setAcceptInsecureCerts(true);
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+			capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 			WebDriver driver = new ChromeDriver(options);
 			browser = new ChromeBrowser(properties, driver);
 			log.info("Using local Chrome web driver");
