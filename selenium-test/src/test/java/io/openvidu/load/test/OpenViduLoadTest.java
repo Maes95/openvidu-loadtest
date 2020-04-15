@@ -96,7 +96,7 @@ import io.openvidu.load.test.utils.ZipGenerator;
  */
 @DisplayName("OpenVidu load test")
 @RunWith(JUnitPlatform.class)
-public class OpenViduLoadTest {
+public class OpenViduLoadTest extends ElastestBaseTest{
 
 	final static Logger log = getLogger(lookup().lookupClass());
 
