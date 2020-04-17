@@ -34,3 +34,4 @@ fakevideo.y4m
 
 */pom.xml.versionsBackup
 browserProvider-conf.sh
+!webapp/docker/openvidu-server.jar
