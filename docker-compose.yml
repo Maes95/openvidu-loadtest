@@ -1,7 +1,7 @@
 version: '2'
 services:
   sut:
-    image: maes95/openvidu-server-kms
+    image: maes95/openvidu-server-kms:v1
     ports:
       - 8080:8080
       - 4443:4443

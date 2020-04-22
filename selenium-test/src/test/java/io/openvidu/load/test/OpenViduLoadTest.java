@@ -355,45 +355,45 @@ public class OpenViduLoadTest extends ElastestBaseTest{
 			log.error("Error closing results file: {}", e.getMessage());
 		}
 
-		// Process test results
-		ResultsParser resultsParser = new ResultsParser(logHelper);
-		resultsParser.processLoadTestStats();
-		resultsParser.processTcpdumps();
+		// // Process test results
+		// ResultsParser resultsParser = new ResultsParser(logHelper);
+		// resultsParser.processLoadTestStats();
+		// resultsParser.processTcpdumps();
 
-		// Download remote result files from OpenVidu Server instance if configured
-		if (DOWNLOAD_OPENVIDU_LOGS) {
-			log.info("Test configured to download remote result files");
-			try {
-				openViduServerManager = new OpenViduServerManager();
-				openViduServerManager.downloadOpenViduKmsLogFiles();
-			} catch (InterruptedException e) {
-				log.error("Some log download thread couldn't finish in 5 minutes: {}", e.getMessage());
-			}
-			log.info("All remote files have been successfully downloaded");
-		} else {
-			log.info("Test configured to NOT download remote result files (DOWNLOAD_OPENVIDU_LOGS=false)");
-		}
+		// // Download remote result files from OpenVidu Server instance if configured
+		// if (DOWNLOAD_OPENVIDU_LOGS) {
+		// 	log.info("Test configured to download remote result files");
+		// 	try {
+		// 		openViduServerManager = new OpenViduServerManager();
+		// 		openViduServerManager.downloadOpenViduKmsLogFiles();
+		// 	} catch (InterruptedException e) {
+		// 		log.error("Some log download thread couldn't finish in 5 minutes: {}", e.getMessage());
+		// 	}
+		// 	log.info("All remote files have been successfully downloaded");
+		// } else {
+		// 	log.info("Test configured to NOT download remote result files (DOWNLOAD_OPENVIDU_LOGS=false)");
+		// }
 
-		// Close results file
-		try {
-			logHelper.closeInfoFile();
-		} catch (IOException e) {
-			log.error("Error closing results file: {}", e.getMessage());
-		}
+		// // Close results file
+		// try {
+		// 	logHelper.closeInfoFile();
+		// } catch (IOException e) {
+		// 	log.error("Error closing results file: {}", e.getMessage());
+		// }
 
-		// Copy test log file to results folder
-		try {
-			FileUtils.copyFile(new File("./logs/test.log"), new File(OpenViduLoadTest.RESULTS_PATH + "/test.log"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// // Copy test log file to results folder
+		// try {
+		// 	FileUtils.copyFile(new File("./logs/test.log"), new File(OpenViduLoadTest.RESULTS_PATH + "/test.log"));
+		// } catch (IOException e) {
+		// 	e.printStackTrace();
+		// }
 
-		// Compress result files into zip
-		try {
-			new ZipGenerator().zipFiles();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// // Compress result files into zip
+		// try {
+		// 	new ZipGenerator().zipFiles();
+		// } catch (IOException e) {
+		// 	e.printStackTrace();
+		// }
 
 		log.info("TEST FINISHED");
 	}
