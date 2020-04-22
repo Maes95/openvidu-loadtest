@@ -49,6 +49,10 @@ public class ChromeBrowser extends Browser {
 		options.addArguments("--use-file-for-fake-video-capture=" + videoFileLocation);
 		// This flag sets the audio input
 		options.addArguments("--use-file-for-fake-audio-capture=" + audioFileLocation);
+
+		options.addArguments("--disable-web-security");
+        options.addArguments("--allow-running-insecure-content");
+		options.addArguments("--window-size=1920,1200","--ignore-certificate-errors");
 		return options;
 	}
 

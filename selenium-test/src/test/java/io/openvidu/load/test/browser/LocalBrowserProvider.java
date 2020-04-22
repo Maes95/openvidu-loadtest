@@ -20,8 +20,6 @@ package io.openvidu.load.test.browser;
 import static java.lang.invoke.MethodHandles.lookup;
 import static org.slf4j.LoggerFactory.getLogger;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,15 +27,9 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.openqa.selenium.remote.RemoteWebDriver;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 /**
  * Manages local browsers (web driver and browser in the same host as this test)
@@ -48,31 +40,6 @@ public class LocalBrowserProvider implements BrowserProvider {
 
 	final static Logger log = getLogger(lookup().lookupClass());
 
-	protected static final Logger logger = LoggerFactory
-            .getLogger(LocalBrowserProvider.class);
-
-    protected static final String CHROME = "chrome";
-    protected static final String FIREFOX = "firefox";
-
-	protected static String browserType = CHROME;
-    protected static String browserVersion;
-    protected static String eusURL;
-
-	public LocalBrowserProvider(){
-
-        browserType = System.getProperty("browser");
-        logger.info("Browser Type: {}", browserType);
-        eusURL = System.getenv("ET_EUS_API");
-
-        if (eusURL == null) {
-            if (browserType == null || browserType.equals(CHROME)) {
-                WebDriverManager.chromedriver().setup();
-            } else {
-                WebDriverManager.firefoxdriver().setup();
-            }
-        }
-	}
-
 	@Override
 	public Browser getBrowser(BrowserProperties properties) {
 		Browser browser = null;
@@ -81,14 +48,13 @@ public class LocalBrowserProvider implements BrowserProvider {
 		switch (properties.type()) {
 		case "chrome":
 			ChromeOptions options = ChromeBrowser.generateFakeVideoChromeOptions("/opt/openvidu/fakevideo.y4m",
-					"/opt/openvidu/fakeaudio.wav");
-			options.addArguments("--window-size=1920,1200","--ignore-certificate-errors");
+					"/opt/openvidu/fakeaudio.wav");	
 			capabilities = DesiredCapabilities.chrome();
 			capabilities.setAcceptInsecureCerts(true);
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 			capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-			WebDriver driver = this.getWebDriver(capabilities);
+			WebDriver driver = new ChromeDriver(options);
 			browser = new ChromeBrowser(properties, driver);
 			log.info("Using local Chrome web driver");
 			break;
@@ -117,40 +83,15 @@ public class LocalBrowserProvider implements BrowserProvider {
 				capabilities.setAcceptInsecureCerts(true);
 				capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 				capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-				capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-				WebDriver driver = this.getWebDriver(capabilities);
+			    capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+				WebDriver driver = new ChromeDriver(options);
 				browsers.add(new ChromeBrowser(props, driver));
-				log.info("Using local Chrome web drivers (get multiple browsers)");
+				log.info("Using local Chrome web drivers");
 				break;
 			}
 		}
 		return browsers;
 	}
-
-	private WebDriver getWebDriver(DesiredCapabilities caps){
-        WebDriver driver = null;
-        if (eusURL == null) {
-            if (browserType == null || browserType.equals(CHROME)) {
-                driver = new ChromeDriver();
-            } else {
-                driver = new FirefoxDriver();
-            }
-        } else {
-            browserVersion = System.getProperty("browserVersion");
-            if (browserVersion != null) {
-                logger.info("Browser Version: {}", browserVersion);
-                caps.setVersion(browserVersion);
-            }
-
-            caps.setCapability("testName", "Load testing");
-            try {
-				driver = new RemoteWebDriver(new URL(eusURL), caps);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-        }
-        return driver;
-    }
 
 	@Override
 	public void terminateInstances() {
