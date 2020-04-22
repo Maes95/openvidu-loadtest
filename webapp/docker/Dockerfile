@@ -25,6 +25,7 @@ COPY webapp/docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Copy OpenVidu Server
 COPY webapp/docker/openvidu-server.jar openvidu-server.jar
+COPY webapp/docker/openvidu.sh /openvidu.sh
 
 # Copy KMS entrypoint
 COPY webapp/docker/kms.sh /kms.sh

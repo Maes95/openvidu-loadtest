@@ -116,9 +116,11 @@ public class LocalBrowserProvider implements BrowserProvider {
 				capabilities = DesiredCapabilities.chrome();
 				capabilities.setAcceptInsecureCerts(true);
 				capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+				capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+				capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 				WebDriver driver = this.getWebDriver(capabilities);
 				browsers.add(new ChromeBrowser(props, driver));
-				log.info("Using local Chrome web drivers");
+				log.info("Using local Chrome web drivers (get multiple browsers)");
 				break;
 			}
 		}
