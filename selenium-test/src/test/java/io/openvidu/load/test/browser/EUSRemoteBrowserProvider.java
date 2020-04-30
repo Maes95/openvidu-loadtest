@@ -106,6 +106,7 @@ public class EUSRemoteBrowserProvider implements BrowserProvider {
         // FOR REMOTE
         capabilities.setCapability("elastestTimeout", 3600);
         // AWS capabilities for browsers
+        setUpAWSConfig();
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> awsConfigMap = null;
         try {

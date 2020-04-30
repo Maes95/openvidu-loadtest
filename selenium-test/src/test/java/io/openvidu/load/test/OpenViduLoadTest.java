@@ -238,8 +238,6 @@ public class OpenViduLoadTest extends ElastestBaseTest{
 		SERVER_SSH_HOSTNAME = OpenViduLoadTest.OPENVIDU_URL.replace("https://", "").replaceAll(":[0-9]+/$", "")
 				.replaceAll("/$", "");
 
-
-
 		switch(System.getenv("BROWSER_MODE")){
 			case "LOCAL_BROWSER":   browserProvider = new LocalBrowserProvider(); break;
 			case "REMOTE_BROWSER":  browserProvider = new RemoteBrowserProvider(); break;
