@@ -75,18 +75,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.openvidu.load.test.browser.Browser;
 import io.openvidu.load.test.browser.BrowserNotReadyException;
 import io.openvidu.load.test.browser.BrowserProperties;
 import io.openvidu.load.test.browser.BrowserProvider;
 import io.openvidu.load.test.browser.EUSBrowserProvider;
+import io.openvidu.load.test.browser.EUSRemoteBrowserProvider;
 import io.openvidu.load.test.browser.LocalBrowserProvider;
 import io.openvidu.load.test.browser.NetworkRestriction;
 import io.openvidu.load.test.browser.RemoteBrowserProvider;
@@ -244,10 +239,13 @@ public class OpenViduLoadTest extends ElastestBaseTest{
 				.replaceAll("/$", "");
 
 
-		if(System.getenv("ET_EUS_API") == null){
-			browserProvider = REMOTE ? new RemoteBrowserProvider() : new LocalBrowserProvider();
-		}else{
-			browserProvider = new EUSBrowserProvider();
+
+		switch(System.getenv("BROWSER_MODE")){
+			case "LOCAL_BROWSER":   browserProvider = new LocalBrowserProvider(); break;
+			case "REMOTE_BROWSER":  browserProvider = new RemoteBrowserProvider(); break;
+			case "EUS_BROWSER":     browserProvider = new EUSBrowserProvider(); break;
+			case "EUS_AWS_BROWSER": browserProvider = new EUSRemoteBrowserProvider(); break;
+			default: browserProvider = new LocalBrowserProvider();
 		}
 
 		startNewSession[0] = new CustomLatch(USERS_SESSION * NUMBER_OF_POLLS);

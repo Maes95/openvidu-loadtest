@@ -88,16 +88,8 @@ public class EUSBrowserProvider implements BrowserProvider {
 
 		while (iterator.hasNext()) {
 			BrowserProperties props = iterator.next();
-			DesiredCapabilities capabilities;
-			ChromeOptions options = ChromeBrowser.generateFakeVideoChromeOptions("/opt/openvidu/fakevideo.y4m",
-						"/opt/openvidu/fakeaudio.wav");
-			capabilities = DesiredCapabilities.chrome();
-			capabilities.setAcceptInsecureCerts(true);
-			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-			capabilities.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
-			WebDriver driver = this.getWebDriver(capabilities);
-			browsers.add(new ChromeBrowser(props, driver));
+			ChromeBrowser chromeBrowser = (ChromeBrowser) this.getBrowser(props);
+			browsers.add(chromeBrowser);
 			log.info("Using EUS Chrome web drivers (get multiple browsers)");
 		}
 		return browsers;
