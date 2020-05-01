@@ -258,7 +258,7 @@
                       - /var/log/*.log
                   
                   output.logstash:
-                  hosts: ["stable.elastest.io:37502"]
+                    hosts: ["stable.elastest.io:37502"]
                   
                   fields_under_root: true
                   fields:
@@ -283,7 +283,7 @@
                       cpu_ticks: false
                   
                   output.logstash:
-                  hosts: ["stable.elastest.io:37502"]
+                    hosts: ["stable.elastest.io:37502"]
                   
                   fields_under_root: true
                   fields:
